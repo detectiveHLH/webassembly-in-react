@@ -1,14 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import logo from './logo.svg';
 import fetch from 'node-fetch';
 import './App.css';
 
 class App extends Component {
-  constructor() {
-    super();
-  }
-
-  componentDidMount () {
+  componentDidMount() {
     const env = {
       memoryBase: 0,
       tableBase: 0,
@@ -18,14 +14,13 @@ class App extends Component {
       table: new WebAssembly.Table({
         initial: 2,
         element: 'anyfunc'
-      }),
-      abort: () => {throw 'abort';}
+      })
     };
 
     fetch('http://localhost:3000/add.wasm').then((response) => {
-        return response.arrayBuffer();
-      }).then((bytes) => {
-        return WebAssembly.instantiate(bytes, {env: env})
+      return response.arrayBuffer();
+    }).then((bytes) => {
+      return WebAssembly.instantiate(bytes, {env: env})
     }).then((instance) => {
       console.log(instance.instance.exports.add(20, 29))
     });
@@ -36,7 +31,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={logo} className="App-logo" alt="logo"/>
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
