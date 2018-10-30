@@ -22,7 +22,7 @@ class App extends Component {
     }).then((bytes) => {
       return WebAssembly.instantiate(bytes, {env: env})
     }).then((instance) => {
-      console.log(instance.instance.exports.add(20, 29))
+      console.log(instance.instance.exports.add(20, 125))
     });
 
   }
