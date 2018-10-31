@@ -5,6 +5,10 @@ import './App.css';
 
 class App extends Component {
   componentDidMount() {
+    this.doSomething();
+  }
+
+  getExportFunction = async (url) => {
     const env = {
       memoryBase: 0,
       tableBase: 0,
@@ -16,16 +20,21 @@ class App extends Component {
         element: 'anyfunc'
       })
     };
-
-    fetch('http://localhost:3000/add.wasm').then((response) => {
+    const instance = await fetch(url).then((response) => {
       return response.arrayBuffer();
     }).then((bytes) => {
       return WebAssembly.instantiate(bytes, {env: env})
     }).then((instance) => {
-      console.log(instance.instance.exports.add(20, 125))
+      return instance.instance.exports;
     });
+    return instance;
+  };
 
-  }
+  doSomething = async () => {
+    const wasmUrl = 'http://localhost:3000/add.wasm';
+    const { add } = await this.getExportFunction(wasmUrl);
+    console.log(add(200,2034));
+  };
 
   render() {
     return (
