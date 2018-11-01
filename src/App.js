@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
 import fetch from 'node-fetch';
 import './App.css';
 
 class App extends Component {
+  constructor () {
+    super();
+    this.state = {
+      jsFibonacci: null,
+      cFibonacci: null
+    }
+  }
+
   componentDidMount() {
     this.doSomething();
   }
@@ -30,28 +37,39 @@ class App extends Component {
     return instance;
   };
 
+  fibonacci = (n) => {
+    if (n <=1 ) {
+      return n;
+    } else {
+      return this.fibonacci(n - 1) + this.fibonacci(n - 2);
+    }
+  }
+
   doSomething = async () => {
-    const wasmUrl = 'http://localhost:3000/add.wasm';
-    const { add } = await this.getExportFunction(wasmUrl);
-    console.log(add(200,2034));
+    const fibonacciUrl = 'http://localhost:3000/fibonacci.wasm';
+    const { _fibonacci } = await this.getExportFunction(fibonacciUrl);
+
+    this.setState({
+      cFibonacci: this.getDuring(_fibonacci),
+      jsFibonacci: this.getDuring(this.fibonacci)
+    })
   };
 
+  getDuring (func) {
+    const start = Date.now();
+    func(41);
+    return Date.now() - start;
+  }
+
   render() {
+    console.log(this.state)
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo"/>
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <h2>测试计算递归无优化的斐波那契数列性能</h2>
+          <h3>当值为 41 时</h3>
+          <span>Javascript实现的斐波那契函数耗费： {this.state.jsFibonacci} ms</span>
+          <span>C实现的斐波那契函数耗费： {this.state.cFibonacci} ms</span>
         </header>
       </div>
     );
