@@ -39,3 +39,6 @@ This function will get the C/C++ function that compiled in wasm file.If you want
 const wasmUrl = 'http://localhost:3000/add.wasm';
 const { add } = await this.getExportFunction(wasmUrl);
 ```
+
+## Performance
+Once you start this project, you will see two different fibonacci function running result in the home page.One is implemented by Javascript, another is C，Javascript takes twice as long as C.
