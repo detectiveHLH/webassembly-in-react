@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import fetch from 'node-fetch';
 import './App.css';
+// import add from './add.wasm';
+// import createInstance from "./add.wasm";
+import wasmC from './add.c';
 
 class App extends Component {
-  constructor () {
+  constructor() {
     super();
     this.state = {
       jsFibonacci: null,
@@ -12,6 +15,19 @@ class App extends Component {
   }
 
   componentDidMount() {
+    wasmC({
+      'global': {},
+      'env': {
+        'memoryBase': 0,
+        'tableBase': 0,
+        'memory': new WebAssembly.Memory({initial: 256}),
+        'table': new WebAssembly.Table({initial: 0, element: 'anyfunc'})
+      }
+    }).then(result => {
+      const exports = result.instance.exports;
+      const add = exports._add;
+      console.log('C return value was', add(2, 3));
+    });
     this.doSomething();
   }
 
@@ -38,7 +54,7 @@ class App extends Component {
   };
 
   fibonacci = (n) => {
-    if (n <=1 ) {
+    if (n <= 1) {
       return n;
     } else {
       return this.fibonacci(n - 1) + this.fibonacci(n - 2);
@@ -46,8 +62,11 @@ class App extends Component {
   }
 
   doSomething = async () => {
-    const fibonacciUrl = 'http://localhost:3000/fibonacci.wasm';
-    const { _fibonacci } = await this.getExportFunction(fibonacciUrl);
+    // console.log(createInstance.toString());
+    // const res = await createInstance();
+    // console.log(res);
+    const fibonacciUrl = './fibonacci.wasm';
+    const {_fibonacci} = await this.getExportFunction(fibonacciUrl);
 
     this.setState({
       cFibonacci: this.getDuring(_fibonacci),
@@ -55,14 +74,14 @@ class App extends Component {
     })
   };
 
-  getDuring (func) {
+  getDuring(func) {
     const start = Date.now();
-    func(41);
+    func(40);
     return Date.now() - start;
   }
 
   render() {
-    console.log(this.state)
+    console.log(this.state);
     return (
       <div className="App">
         <header className="App-header">

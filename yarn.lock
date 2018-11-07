@@ -1630,6 +1630,10 @@ bytes@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
 
+c-cpp-modules-webpack-loader@^0.9.9:
+  version "0.9.9"
+  resolved "https://registry.yarnpkg.com/c-cpp-modules-webpack-loader/-/c-cpp-modules-webpack-loader-0.9.9.tgz#154171bb3ec8ce95270bded89c3eb1c2e914bfce"
+
 cacache@^10.0.4:
   version "10.0.4"
   resolved "https://registry.yarnpkg.com/cacache/-/cacache-10.0.4.tgz#6452367999eff9d4188aefd9a14e9d7c6a263460"

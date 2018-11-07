@@ -115,5 +115,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "c-cpp-modules-webpack-loader": "^0.9.9"
   }
 }

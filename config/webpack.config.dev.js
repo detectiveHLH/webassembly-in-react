@@ -186,17 +186,23 @@ module.exports = {
             options: {
               formatter: require.resolve('react-dev-utils/eslintFormatter'),
               eslintPath: require.resolve('eslint'),
-              
+
             },
             loader: require.resolve('eslint-loader'),
           },
         ],
         include: paths.appSrc,
       }, {
-        test: /\.wasm$/,
-        type: 'javascript/auto',
-        loaders: ['wasm-loader'],
-      }, {
+        test: /\.(c|cpp)$/,
+        use: [{
+          loader: 'wasm-loader'
+        }, {
+          loader: 'c-cpp-modules-webpack-loader',
+          options: {
+            compiller: '-Os -s WASM=1 -s SIDE_MODULE=1'
+          }
+        }]
+      },{
         // "oneOf" will traverse all following loaders until one will
         // match the requirements. When no loader matches it will fall
         // back to the "file" loader at the end of the loader list.
@@ -222,7 +228,7 @@ module.exports = {
               customize: require.resolve(
                 'babel-preset-react-app/webpack-overrides'
               ),
-              
+
               plugins: [
                 [
                   require.resolve('babel-plugin-named-asset-import'),
@@ -262,7 +268,7 @@ module.exports = {
               cacheDirectory: true,
               // Don't waste time on Gzipping the cache
               cacheCompression: false,
-              
+
               // If an error happens in a package, it's possible to be
               // because it was compiled. Thus, we don't want the browser
               // debugger to show the original code. Instead, the code
