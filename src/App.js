@@ -26,7 +26,9 @@ class App extends Component {
     }).then(result => {
       const exports = result.instance.exports;
       const add = exports._add;
+      const fibonacci = exports._fibonacci;
       console.log('C return value was', add(2, 3));
+      console.log('Fibonacci', fibonacci(2));
     });
     this.doSomething();
   }
